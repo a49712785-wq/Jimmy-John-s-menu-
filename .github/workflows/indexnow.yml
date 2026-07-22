@@ -1,0 +1,35 @@
+name: Ping IndexNow (Bing) on Publish
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  indexnow-ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit all site URLs to IndexNow
+        run: |
+          curl -s -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d '{
+              "host": "jimmyjohnsmenus.us",
+              "key": "6809a08440b2eff3761319a680b8c6b4",
+              "keyLocation": "https://jimmyjohnsmenus.us/6809a08440b2eff3761319a680b8c6b4.txt",
+              "urlList": [
+                "https://jimmyjohnsmenus.us/",
+                "https://jimmyjohnsmenus.us/sandwiches/",
+                "https://jimmyjohnsmenus.us/wraps/",
+                "https://jimmyjohnsmenus.us/sides-drinks/",
+                "https://jimmyjohnsmenus.us/nutrition/",
+                "https://jimmyjohnsmenus.us/hours/",
+                "https://jimmyjohnsmenus.us/locations/",
+                "https://jimmyjohnsmenus.us/promo-code/",
+                "https://jimmyjohnsmenus.us/about/",
+                "https://jimmyjohnsmenus.us/contact/",
+                "https://jimmyjohnsmenus.us/privacy-policy/",
+                "https://jimmyjohnsmenus.us/terms/",
+                "https://jimmyjohnsmenus.us/disclaimer/"
+              ]
+            }' \
+            -w "\nHTTP Status: %{http_code}\n"
