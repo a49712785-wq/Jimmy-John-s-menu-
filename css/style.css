@@ -450,8 +450,10 @@ a.text-link:hover{ color: var(--color-accent); }
     repeating-linear-gradient(45deg, var(--color-surface-2) 0 10px, var(--color-bg) 10px 20px);
   display:flex; align-items:center; justify-content:center;
 }
-.card-media img{ width:100%; height:100%; object-fit:cover; }
+.card-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
 .card-media .media-fallback{
+  position:relative;
+  z-index:0;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--color-muted);
