@@ -843,10 +843,14 @@ function computeRecommendations(constraints, goalKey){
 }
 
 /* ============================ single-item alternatives ==================== */
+const MEAL_TIER = new Set(['Sandwiches','Favorites','Originals','Little Johns','JJ Gargantuan','Plain Slims','Wraps']);
+function mealGroupFor(category){ return MEAL_TIER.has(category) ? 'meal' : 'snack'; }
+
 function findAlternatives(item, constraints){
   const pool = FOOD_POOL.filter(i => i.id!==item.id && passesHard(i, constraints));
   const sameCat = pool.filter(i=>i.category===item.category);
-  const base = sameCat.length>=3 ? sameCat : pool;
+  const sameTier = pool.filter(i=>mealGroupFor(i.category)===mealGroupFor(item.category));
+  const base = sameCat.length>=3 ? sameCat : (sameTier.length>=3 ? sameTier : pool);
 
   const out = {};
   const lowerSodium = base.filter(i=>item.nutrition.sodium - i.nutrition.sodium >= MEANINGFUL.sodium)
