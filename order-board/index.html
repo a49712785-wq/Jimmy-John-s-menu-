@@ -846,11 +846,27 @@ function computeRecommendations(constraints, goalKey){
 const MEAL_TIER = new Set(['Sandwiches','Favorites','Originals','Little Johns','JJ Gargantuan','Plain Slims','Wraps']);
 function mealGroupFor(category){ return MEAL_TIER.has(category) ? 'meal' : 'snack'; }
 
+// "Sides" is too mixed a category on its own (chips, condiments, salads, a
+// bread loaf, and a pickle) to compare items within it meaningfully - a
+// dollop of avocado spread and a whole French Bread loaf are not
+// interchangeable just because both are filed under Sides.
+const SIDE_SUBGROUP = {
+  'Jalapeno Chips':'chips', 'Regular Chips':'chips', 'Salt & Vinegar Chips':'chips', 'BBQ Chips':'chips',
+  "Homestyle Ranch (Large)":'condiment', "Homestyle Ranch (Small)":'condiment',
+  "Kickin' Ranch (Large)":'condiment', "Kickin' Ranch (Small)":'condiment', 'Avocado Spread':'condiment',
+  'Homestyle Potato Salad':'salad', 'Pesto Bowtie Pasta Salad':'salad',
+  'French Bread (Loaf)':'bread',
+  'Jimmy Pickle':'pickle'
+};
+function sideSubgroupFor(item){ return item.category==='Sides' ? (SIDE_SUBGROUP[item.name]||null) : null; }
+
 function findAlternatives(item, constraints){
   const pool = FOOD_POOL.filter(i => i.id!==item.id && passesHard(i, constraints));
+  const subgroup = sideSubgroupFor(item);
+  const sameSubgroup = subgroup ? pool.filter(i=>sideSubgroupFor(i)===subgroup) : [];
   const sameCat = pool.filter(i=>i.category===item.category);
   const sameTier = pool.filter(i=>mealGroupFor(i.category)===mealGroupFor(item.category));
-  const base = sameCat.length>=3 ? sameCat : (sameTier.length>=3 ? sameTier : pool);
+  const base = sameSubgroup.length>=2 ? sameSubgroup : (sameCat.length>=3 ? sameCat : (sameTier.length>=3 ? sameTier : pool));
 
   const out = {};
   const lowerSodium = base.filter(i=>item.nutrition.sodium - i.nutrition.sodium >= MEANINGFUL.sodium)
