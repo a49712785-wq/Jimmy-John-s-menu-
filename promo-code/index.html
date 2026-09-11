@@ -182,6 +182,316 @@
 
   <section class="section">
     <div class="container">
+      <h2>Your Number: Rewards vs. Codes Calculator</h2>
+      <p>The switching point above is a rough guide. Enter your own monthly spend and order frequency to see exactly where you land.</p>
+
+      <!-- Jimmy John's: Rewards vs. Code Savings Calculator -->
+      <div class="jjc-wrap" id="jjc-wrap">
+        <style>
+          #jjc-wrap {
+            --jjc-paper: #FAF3E7;
+            --jjc-panel: #FFFDF8;
+            --jjc-ink: #2B2420;
+            --jjc-ink-soft: #5B5147;
+            --jjc-mustard: #C98A1B;
+            --jjc-mustard-dark: #A6710F;
+            --jjc-pickle: #4B6B3A;
+            --jjc-line: #E4D7BE;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--jjc-ink);
+            background: var(--jjc-paper);
+            border: 1px solid var(--jjc-line);
+            border-radius: 4px;
+            max-width: 640px;
+            margin: 1.5rem auto 0;
+            padding: 0;
+            overflow: hidden;
+          }
+          #jjc-wrap * { box-sizing: border-box; }
+          @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap');
+          .jjc-band {
+            background: var(--jjc-ink);
+            color: var(--jjc-paper);
+            padding: 0.85rem 1.5rem;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+          }
+          .jjc-band h3 {
+            margin: 0;
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+          }
+          .jjc-band span {
+            font-size: 0.78rem;
+            color: #D9CFC1;
+            white-space: nowrap;
+          }
+          .jjc-body { padding: 1.5rem; }
+          .jjc-row { margin-bottom: 1.4rem; }
+          .jjc-row:last-of-type { margin-bottom: 0; }
+          .jjc-row label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+          }
+          .jjc-row label .jjc-val {
+            display: flex;
+            align-items: baseline;
+            gap: 0.3rem;
+          }
+          .jjc-val-prefix {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--jjc-mustard-dark);
+          }
+          .jjc-val-input {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--jjc-mustard-dark);
+            background: var(--jjc-panel);
+            border: 1px solid var(--jjc-line);
+            border-radius: 3px;
+            width: 3.6rem;
+            padding: 0.1rem 0.35rem;
+            text-align: right;
+          }
+          .jjc-val-input:focus {
+            outline: 2px solid var(--jjc-mustard);
+            outline-offset: 1px;
+          }
+          .jjc-val-input::-webkit-outer-spin-button,
+          .jjc-val-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+          .jjc-val-input[type=number] { -moz-appearance: textfield; }
+          #jjc-wrap input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--jjc-line);
+            outline: none;
+            margin: 0;
+          }
+          #jjc-wrap input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--jjc-mustard);
+            border: 3px solid var(--jjc-panel);
+            box-shadow: 0 0 0 1px var(--jjc-mustard-dark);
+            cursor: pointer;
+          }
+          #jjc-wrap input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--jjc-mustard);
+            border: 3px solid var(--jjc-panel);
+            box-shadow: 0 0 0 1px var(--jjc-mustard-dark);
+            cursor: pointer;
+          }
+          .jjc-scale {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: var(--jjc-ink-soft);
+            margin-top: 0.3rem;
+          }
+          .jjc-receipt {
+            margin-top: 1.6rem;
+            background: var(--jjc-panel);
+            border: 1px dashed var(--jjc-line);
+            border-radius: 3px;
+            padding: 1.25rem 1.4rem;
+          }
+          .jjc-verdict {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.28rem;
+            font-weight: 600;
+            line-height: 1.35;
+            margin: 0 0 0.9rem 0;
+          }
+          .jjc-verdict .jjc-winner { color: var(--jjc-pickle); }
+          .jjc-verdict .jjc-toss { color: var(--jjc-mustard-dark); }
+          .jjc-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.9rem;
+            border-top: 1px solid var(--jjc-line);
+            padding-top: 0.9rem;
+          }
+          .jjc-stat-label {
+            font-size: 0.72rem;
+            text-transform: none;
+            color: var(--jjc-ink-soft);
+            margin-bottom: 0.15rem;
+          }
+          .jjc-stat-num {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+          }
+          .jjc-note {
+            font-size: 0.78rem;
+            color: var(--jjc-ink-soft);
+            margin-top: 1rem;
+            line-height: 1.5;
+          }
+          @media (max-width: 480px) {
+            .jjc-band { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+            .jjc-stats { grid-template-columns: 1fr; }
+          }
+        </style>
+
+        <div class="jjc-band">
+          <h3>Rewards vs. Codes: Your Number</h3>
+          <span>Based on JJ Rewards' published math</span>
+        </div>
+
+        <div class="jjc-body">
+          <div class="jjc-row">
+            <label for="jjc-spend">Monthly spend at Jimmy John's
+              <span class="jjc-val">
+                <span class="jjc-val-prefix">$</span>
+                <input type="number" class="jjc-val-input" id="jjc-spend-num" min="10" max="300" step="5" value="60" aria-label="Monthly spend in dollars">
+              </span>
+            </label>
+            <input type="range" id="jjc-spend" min="10" max="300" step="5" value="60">
+            <div class="jjc-scale"><span>$10</span><span>$300</span></div>
+          </div>
+
+          <div class="jjc-row">
+            <label for="jjc-orders">Orders per month
+              <span class="jjc-val">
+                <input type="number" class="jjc-val-input" id="jjc-orders-num" min="1" max="20" step="1" value="3" aria-label="Orders per month">
+              </span>
+            </label>
+            <input type="range" id="jjc-orders" min="1" max="20" step="1" value="3">
+            <div class="jjc-scale"><span>1</span><span>20</span></div>
+          </div>
+
+          <div class="jjc-receipt">
+            <p class="jjc-verdict" id="jjc-verdict">&mdash;</p>
+            <div class="jjc-stats">
+              <div>
+                <div class="jjc-stat-label">Points this month</div>
+                <div class="jjc-stat-num" id="jjc-points">0</div>
+              </div>
+              <div>
+                <div class="jjc-stat-label">Next free sandwich in</div>
+                <div class="jjc-stat-num" id="jjc-days">&mdash;</div>
+              </div>
+              <div>
+                <div class="jjc-stat-label">Rewards value / month</div>
+                <div class="jjc-stat-num" id="jjc-rewards-val">$0</div>
+              </div>
+              <div>
+                <div class="jjc-stat-label">A 15&ndash;20% code would save</div>
+                <div class="jjc-stat-num" id="jjc-code-val">$0</div>
+              </div>
+            </div>
+            <p class="jjc-note">Rewards value assumes 10 points/$1 and a 1,700-point, ~$8.50 free toasted sandwich. Code value assumes you actually find a 15&ndash;20% code every time you order, which isn't guaranteed. This is a comparison, not a promise of savings.</p>
+          </div>
+        </div>
+      </div>
+
+      <script>
+      (function () {
+        var spendEl = document.getElementById('jjc-spend');
+        var ordersEl = document.getElementById('jjc-orders');
+        var spendNum = document.getElementById('jjc-spend-num');
+        var ordersNum = document.getElementById('jjc-orders-num');
+        var pointsEl = document.getElementById('jjc-points');
+        var daysEl = document.getElementById('jjc-days');
+        var rewardsValEl = document.getElementById('jjc-rewards-val');
+        var codeValEl = document.getElementById('jjc-code-val');
+        var verdictEl = document.getElementById('jjc-verdict');
+
+        var FREE_SANDWICH_POINTS = 1700;
+        var FREE_SANDWICH_VALUE = 8.5;
+        var CODE_MID_RATE = 0.175;
+        var CODE_LOW_RATE = 0.15;
+
+        function clamp(val, min, max) {
+          return Math.min(max, Math.max(min, val));
+        }
+
+        function calc() {
+          var spend = parseInt(spendEl.value, 10);
+          var orders = parseInt(ordersEl.value, 10);
+
+          var pointsPerMonth = spend * 10;
+          var monthsToFree = FREE_SANDWICH_POINTS / pointsPerMonth;
+          var daysToFree = Math.round(monthsToFree * 30);
+          var rewardsMonthlyValue = (pointsPerMonth / FREE_SANDWICH_POINTS) * FREE_SANDWICH_VALUE;
+          var codeMonthlyValue = spend * CODE_MID_RATE;
+          var codeMonthlyValueLow = spend * CODE_LOW_RATE;
+
+          pointsEl.textContent = pointsPerMonth.toLocaleString();
+          daysEl.textContent = daysToFree <= 400 ? (daysToFree + ' days') : '400+ days';
+          rewardsValEl.textContent = '$' + rewardsMonthlyValue.toFixed(2);
+          codeValEl.textContent = '$' + codeMonthlyValueLow.toFixed(2) + '\u2013' + codeMonthlyValue.toFixed(2);
+
+          var verdictHTML;
+          if (spend >= 120) {
+            verdictHTML = 'At $' + spend + '/mo, <span class="jjc-winner">JJ Rewards clearly wins</span> \u2014 points outpace what an occasional good code would save you.';
+          } else if (spend < 50) {
+            verdictHTML = 'At $' + spend + '/mo, <span class="jjc-toss">a good code beats waiting on Rewards</span> \u2014 but at this spend level, the difference is small either way.';
+          } else {
+            verdictHTML = 'At $' + spend + '/mo, <span class="jjc-toss">it\'s close</span> \u2014 Rewards and a good code land in the same range. Whichever you find first wins.';
+          }
+          verdictEl.innerHTML = verdictHTML;
+        }
+
+        spendEl.addEventListener('input', function () {
+          spendNum.value = spendEl.value;
+          calc();
+        });
+        ordersEl.addEventListener('input', function () {
+          ordersNum.value = ordersEl.value;
+          calc();
+        });
+
+        spendNum.addEventListener('input', function () {
+          var v = parseInt(spendNum.value, 10);
+          if (isNaN(v)) return;
+          spendEl.value = clamp(v, 10, 300);
+          calc();
+        });
+        spendNum.addEventListener('blur', function () {
+          spendNum.value = spendEl.value;
+        });
+
+        ordersNum.addEventListener('input', function () {
+          var v = parseInt(ordersNum.value, 10);
+          if (isNaN(v)) return;
+          ordersEl.value = clamp(v, 1, 20);
+          calc();
+        });
+        ordersNum.addEventListener('blur', function () {
+          ordersNum.value = ordersEl.value;
+        });
+
+        calc();
+      })();
+      </script>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <h2>Why Coupon Sites Can't Keep a "Current" List</h2>
       <p>Third-party coupon aggregator sites aren't real-time sources. They can't be.</p>
       <p>Jimmy John's releases codes for specific time windows, usually 2&ndash;5 days around events like National Sandwich Day, holiday weekends, month-specific promotions, or random flash deals to app subscribers. A code goes live, maybe 10,000&ndash;50,000 people use it during its window, then it ends. Some codes have single-use limits shared across all users, once the total redemptions hit the cap, everyone gets "code already used" errors. The code is dead.</p>
